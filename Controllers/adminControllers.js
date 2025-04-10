@@ -31,8 +31,8 @@ exports.logAdminIn = async (req, res) => {
     }
 
     // Check if a user with the given email exists in the database
-    const actual_admin_username = process.env.ADMIN_USERNAME;
-    const actual_admin_password = process.env.ADMIN_PASSWORD;
+    const actual_admin_username = "admin123"//process.env.ADMIN_USERNAME;
+    const actual_admin_password = "pass123"//process.env.ADMIN_PASSWORD;
 
     // Check if the candidate password is the same as the actual password
     const correct =
