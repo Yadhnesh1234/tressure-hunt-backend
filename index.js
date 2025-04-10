@@ -18,7 +18,7 @@ app.use(cors());
 // Adding Config File Contents to process
 require("dotenv").config({ path: "./config.env" });
 
-const PORT = process.env.PORT || 8000;
+const PORT = 8000;
 const CONNECTION_STRING = process.env.CONNECTION_STRING;
 
 // Database Connection

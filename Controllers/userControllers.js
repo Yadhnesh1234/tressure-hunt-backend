@@ -100,7 +100,8 @@ exports.verifyAnswer = async (req, res) => {
   try {
     // Extract necessary information from the request body
     const { questionId, answer } = req.body;
-
+    const userId = req.user.id;
+    const user = await User.findById(userId);
     // Check if 'questionId' and 'answer' fields are present
     if (!questionId || !answer) {
       return res.status(400).json({
@@ -109,18 +110,24 @@ exports.verifyAnswer = async (req, res) => {
         message: "'questionId' and 'answer' fields are mandatory",
       });
     }
-
+    const testQuestion = await Test.findOne({ questionId });
     if (questionId == TOTAL_QUESTION_COUNT) {
-      return res.status(400).json({
+    console.log(questionId,"  ",TOTAL_QUESTION_COUNT," ",testQuestion.answer)
+    const isAnswerCorrect = testQuestion.answer === answer;
+    return res.status(200).json({
+      status: "success",
+      data: { answerCorrect: isAnswerCorrect },
+      message: isAnswerCorrect ? "Answer is correct" : "Answer is incorrect",
+    });
+      /*return res.status(400).json({
         status: "fail",
         data: null,
         message: "cannot verify last question",
-      });
+      });*/
     }
 
     // Find the user in the database
-    const userId = req.user.id;
-    const user = await User.findById(userId);
+
 
     if (!user) {
       return res.status(400).json({
@@ -140,7 +147,7 @@ exports.verifyAnswer = async (req, res) => {
     }
 
     // Find the corresponding question in the 'Test' Document
-    const testQuestion = await Test.findOne({ questionId });
+    
 
     if (!testQuestion) {
       return res.status(400).json({
@@ -243,10 +250,10 @@ exports.getNextQuestion = async (req, res) => {
 exports.endTest = async (req, res) => {
   try {
     const { questionId, answer } = req.body;
-
+    console.log("questionId : ",questionId)
     // Verify the current answer with the current questionId
     const testQuestion = await Test.findOne({ questionId });
-
+    console.log(testQuestion)
     if (!testQuestion) {
       return res.status(400).json({
         status: "fail",
