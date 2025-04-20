@@ -113,7 +113,7 @@ exports.verifyAnswer = async (req, res) => {
     const testQuestion = await Test.findOne({ questionId });
     if (questionId == TOTAL_QUESTION_COUNT) {
     console.log(questionId,"  ",TOTAL_QUESTION_COUNT," ",testQuestion.answer)
-    const isAnswerCorrect = testQuestion.answer === answer;
+    const isAnswerCorrect = testQuestion.answer.toLowerCase() === answer.toLowerCase();
     return res.status(200).json({
       status: "success",
       data: { answerCorrect: isAnswerCorrect },
@@ -158,7 +158,7 @@ exports.verifyAnswer = async (req, res) => {
     }
 
     // Match the actual 'answer' with the answer given by the user
-    const isAnswerCorrect = testQuestion.answer === answer;
+    const isAnswerCorrect = testQuestion.answer.toLowerCase() === answer.toLowerCase();
 
     if (isAnswerCorrect) {
       // If the answer is correct, increment 'questionsSolved' for the user
